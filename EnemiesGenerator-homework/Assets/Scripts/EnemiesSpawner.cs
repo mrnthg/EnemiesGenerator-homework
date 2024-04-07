@@ -4,39 +4,34 @@ using UnityEngine;
 
 public class EnemiesSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private Enemy _enemyPrefab;
     [SerializeField] private List<GameObject> _pointSpawn = new List<GameObject>();
     [SerializeField] private float _smoothIncreaseDuration = 2f;
+
+    private float _minPosition = -1;
+    private float _maxPosition = 1;
 
     private void Start()
     {
         StartCoroutine(CreateEnemies());
     }
 
-    private int RandomPoint()
-    {
-        int numberPoint = Random.Range(0, _pointSpawn.Count);
-        return numberPoint;
-    }
+    private int RandomPoint() => Random.Range(0, _pointSpawn.Count);
 
-    private int RandomRotate()
-    {
-        int numberPoint = Random.Range(0, 361);
-        return numberPoint;
-    }
+    private Vector3 RandomDirection() => new Vector3(Random.Range(_minPosition, _maxPosition), 0, Random.Range(_minPosition, _maxPosition)).normalized;
 
     private IEnumerator CreateEnemies()
-    {
-        float elapsedTime = 0f;
+    {  
+        var duration = new WaitForSeconds(_smoothIncreaseDuration);
 
-        while (elapsedTime < _smoothIncreaseDuration)
+        while (true)
         {
-            elapsedTime += Time.deltaTime;
-            _enemyPrefab.transform.position = _pointSpawn[RandomPoint()].transform.position;
-            _enemyPrefab.transform.rotation = Quaternion.Euler(0, RandomRotate(), 0);
-            Instantiate(_enemyPrefab);
+            Vector3 position = _pointSpawn[RandomPoint()].transform.position;   
 
-            yield return new WaitForSeconds(_smoothIncreaseDuration);
+            Enemy newEnemy = Instantiate(_enemyPrefab, position, Quaternion.identity);
+            newEnemy.Init(RandomDirection());
+
+            yield return duration;
         }
         
     }
