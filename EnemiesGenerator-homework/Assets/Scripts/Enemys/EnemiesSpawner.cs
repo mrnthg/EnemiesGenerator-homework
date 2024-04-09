@@ -6,11 +6,8 @@ public class EnemiesSpawner : MonoBehaviour
 {
     [SerializeField] private List<Enemy> _enemyPrefabs = new List<Enemy>();
     [SerializeField] private List<Target> _targets = new List<Target>();
-    [SerializeField] private List<GameObject> _pointsSpawn = new List<GameObject>();
+    [SerializeField] private List<Transform> _pointsSpawn = new List<Transform>();
     [SerializeField] private float _smoothIncreaseDuration = 2f;
-
-    //private float _minPosition = -1; (код из 1го задания)
-    //private float _maxPosition = 1; (код из 1го задания)
 
     private void Start()
     {
@@ -18,8 +15,6 @@ public class EnemiesSpawner : MonoBehaviour
     }
 
     private int RandomPoint() => Random.Range(0, _pointsSpawn.Count);
-
-    //private Vector3 RandomDirection() => new Vector3(Random.Range(_minPosition, _maxPosition), 0, Random.Range(_minPosition, _maxPosition)).normalized; (код из 1го задания)
 
     private Enemy RandomEnemy() => _enemyPrefabs[Random.Range(0, _enemyPrefabs.Count)];
 
@@ -31,14 +26,13 @@ public class EnemiesSpawner : MonoBehaviour
 
         while (true)
         {
-            Vector3 position = _pointsSpawn[RandomPoint()].transform.position;
+            Vector3 position = _pointsSpawn[RandomPoint()].position;
             Transform target = RandomTarget().transform;
 
             Enemy newEnemy = Instantiate(RandomEnemy(), position, Quaternion.identity);
             newEnemy.Init(target);
 
             yield return duration;
-        }
-        
+        }        
     }
 }

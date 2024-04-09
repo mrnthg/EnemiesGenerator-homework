@@ -1214,8 +1214,8 @@ MonoBehaviour:
   - {fileID: 1097726793}
   - {fileID: 1642410158}
   _pointsSpawn:
-  - {fileID: 1545043622}
-  - {fileID: 1498508299}
+  - {fileID: 1545043623}
+  - {fileID: 1498508300}
   _smoothIncreaseDuration: 2
 --- !u!4 &1642410152 stripped
 Transform:
